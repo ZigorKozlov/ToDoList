@@ -23,45 +23,52 @@ class TableViewController: UITableViewController {
         
         let alertContoller = UIAlertController(title:"Create new Item", message: "", preferredStyle: /*тип всплывающего окна */.alert)
         
+        //Добавляем текстовое поле
         alertContoller.addTextField { (textField) in
-            textField.placeholder = "New item name"
+            textField.placeholder = "New item name"// плейсхолдер - еле видное сообщение в поле ввода перед вводом
         }
         
-        //Кнопка
+        //Создаём кнопки
         let alertAction1 = UIAlertAction(title: "Create", style: .cancel) { ( alert ) in
             //добавить новую запить
-            let newItem = alertContoller.textFields![0].text
+            let newItem = alertContoller.textFields![0].text//Получаем то, что было написано в поле текства, после нажатия create
+            
             //добавление
-            addNewItem(nameItem: newItem!)
-            //for mirror in table
-            self.tableView.reloadData()
+            if newItem != "" {
+                addNewItem(nameItem: newItem!)
+                //for mirror in table
+                self.tableView.reloadData()
+            }
         }
         
         let alertAction2 = UIAlertAction(title: "Cancel", style: .destructive) { ( alert ) in
             //Ничего не делаем при нажатии кнопки
         }
-        //добавляем алерт контроллеру алертАкшнs
+        //
+        
+        
+        //добавляем алерт контроллеру алертАкшнs(кнопку
         alertContoller.addAction(alertAction1)
         alertContoller.addAction(alertAction2)
         
-        //вынкция для всплывания
+        //функция для всплывания окна
         present(alertContoller, animated: true) {
             //Код выполняющийся, когда контроллер появится на экране
             //Ничего не будет делать
         }
-
+        
     }
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        // Uncomment the following line to preserve selection between presentations
+//        // self.clearsSelectionOnViewWillAppear = false
+//
+//        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+//        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+//    }
 
     // MARK: - Table view data source
 
@@ -76,14 +83,17 @@ class TableViewController: UITableViewController {
     }
 
     
+    //Метод-делегат для отображения конфигурации строк
+    //вызывается при вызове reloadData() Для каждой строки indexPath.row
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         // Configure the cell...
-        cell.textLabel?.text = toDoItems[indexPath.row]["Name"] as? String
+        cell.textLabel?.text = toDoItems[indexPath.row]["Name"] as? String//присваеваем текст из массива данных
         
         
         //Set checkMark isComplited
+        //Проверка выполнено действие или нет
         if (toDoItems[indexPath.row]["isComplited"] as? Bool) == true {
             //Comlite
             cell.accessoryType = .checkmark
